@@ -1,9 +1,5 @@
-import React from 'react'
+import React from "react";
 
-export default function Ticket() {
-    return (
-        <div>
-            
-        </div>
-    )
+export default function Ticket({ ticket }) {
+    return <div>{ticket.id}</div>;
 }
