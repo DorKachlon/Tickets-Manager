@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Paper from "@material-ui/core/Paper";
-
-export default function Ticket({ ticket }) {
+import Button from "@material-ui/core/Button";
+import "../ticket.css";
+export default function Ticket({
+    ticket,
+    setHideTicketsCounter,
+    hideTicketsCounter,
+}) {
+    const [hidden, setHidden] = useState(false);
     function addZero(i) {
         if (i < 10) {
             i = "0" + i;
@@ -29,22 +35,47 @@ export default function Ticket({ ticket }) {
     }
 
     return (
-        <div className="ticket">
-            <Paper elevation={3}>
-                <div className="title"> {ticket.title}</div>
-                <div className="content">{ticket.content}</div>
-                <div className="email">by {ticket.userEmail}</div>
-                <div className="date">|{convertDate(ticket.creationTime)}</div>
-                {ticket.labels && (
-                    <div className="labels">
-                        {ticket.labels.map((label) => (
-                            <button key={label} className="label">
-                                {label}
-                            </button>
-                        ))}
-                    </div>
-                )}
-            </Paper>
-        </div>
+        <>
+            {!hidden ? (
+                <div className="ticket">
+                    <Paper elevation={3}>
+                        <div className="headerTicket">
+                            <div className="title"> {ticket.title}</div>
+                            <Button
+                                className="hideTicketButton"
+                                style={{ marginLeft: "auto", fontWeight:"bolder",  textTransform: "none"}}
+                                onClick={() => {
+                                    setTimeout(() => {
+                                        setHidden(true);
+                                        setHideTicketsCounter(
+                                            hideTicketsCounter + 1
+                                        );
+                                    }, 100);
+                                }}
+                                color="primary"
+                            >
+                                Hide
+                            </Button>
+                        </div>
+                        <div className="content">{ticket.content}</div>
+                        <div className="footerTicket">
+                            <div className="email">by {ticket.userEmail}</div>
+                            <div className="date">
+                                |{convertDate(ticket.creationTime)}
+                            </div>
+                            {ticket.labels && (
+                                <div className="labels">
+                                    {ticket.labels.map((label) => (
+                                        <button key={label} className="label">
+                                            {label}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </Paper>
+                </div>
+            ) : null}
+        </>
     );
 }

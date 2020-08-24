@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap");
+
+* {
+    font-family: "Raleway", sans-serif;
+}
+.ticket {
+    margin: 2vw 10vw;
+}
+.headerTicket {
+    display: flex;
+}
+.title {
+    font-size: 1.5vw;
+    margin: 0.5vw 1vw;
+}
+.hideTicketButton {
+    margin-left: auto;
+}
+
+.content {
+    font-size: 1vw;
+    margin: 1vw;
+}
+.footerTicket {
+    display: flex;
+}
+.labels {
+    margin-left: auto;
+}

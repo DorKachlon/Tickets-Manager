@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Ticket from "./Ticket";
-import "./App.css";
+import "../App.css";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 
 function App() {
     const [ticketsArray, setTicketsArray] = useState([]);
+    let [hideTicketsCounter, setHideTicketsCounter] = useState(0);
+    const CTicket = useRef();
+    debugger;
     async function loadTicketsArray(param) {
         if (param) {
             try {
@@ -31,6 +34,13 @@ function App() {
 
     return (
         <main>
+            <div>
+                Showing {ticketsArray.length} results{" "}
+                {hideTicketsCounter !== 0 &&
+                    `(${hideTicketsCounter} hidden tickets - `}
+                {hideTicketsCounter !== 0 && <button>restore</button>}
+                {hideTicketsCounter !== 0 && ")"}
+            </div>
             <TextField
                 id="searchInput"
                 label="Search"
@@ -42,7 +52,13 @@ function App() {
             />
 
             {ticketsArray.map((object) => (
-                <Ticket key={object.id} ticket={object} />
+                <Ticket
+                    ref={CTicket}
+                    key={object.id}
+                    ticket={object}
+                    hideTicketsCounter={hideTicketsCounter}
+                    setHideTicketsCounter={setHideTicketsCounter}
+                />
             ))}
         </main>
     );
