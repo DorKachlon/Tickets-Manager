@@ -13,7 +13,6 @@ app.get("/api/tickets", async (req, res) => {
     const content = await fs.readFile(filePath);
     const arr = JSON.parse(content);
     const searchText = req.query.searchText;
-    console.log(searchText);
     if (searchText) {
         const filterArr = arr.filter((obj) =>
             obj.title.toLowerCase().includes(searchText.toLowerCase())
