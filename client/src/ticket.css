@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap');
 * {
     font-family: "Raleway", sans-serif;
 }
@@ -10,6 +11,7 @@
     display: flex;
 }
 .title {
+    font-weight: bold;
     font-size: 1.5vw;
     margin: 0.5vw 1vw;
 }
@@ -20,6 +22,15 @@
 .content {
     font-size: 1vw;
     margin: 1vw;
+}
+.email, .date{
+    margin: 0 1vw;
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Nunito', sans-serif;
+    font-size: 1vw;
+}
+.email{
+    margin-right: 1em;
 }
 .footerTicket {
     display: flex;

@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import "../ticket.css";
 export default function Ticket({
-    ticket,
+    ticketsArray,
     setHideTicketsCounter,
     hideTicketsCounter,
 }) {
-    const [hidden, setHidden] = useState(false);
     function addZero(i) {
         if (i < 10) {
             i = "0" + i;
@@ -31,51 +30,56 @@ export default function Ticket({
         let mm = String(today.getMonth() + 1).padStart(2, "0");
         let yyyy = today.getFullYear();
         today = dd + "/" + mm + "/" + yyyy;
-        return today + " " + h + ":" + m + ":" + s + " " + amPm;
+        return today + ", " + " " + h + ":" + m + ":" + s + " " + amPm;
     }
+    debugger;
+    return ticketsArray.map((ticket) => {
+        return (
+            <div className="ticket">
+                <Paper
+                    elevation={3}
+                    style={
+                        ticket.done && { backgroundColor: "rgb(144, 204, 117)" }
+                    }
+                >
+                    <div className="headerTicket">
+                        <div className="title"> {ticket.title}</div>
+                        <Button
+                            className="hideTicketButton"
+                            style={{
+                                marginLeft: "auto",
+                                fontWeight: "bolder",
+                                textTransform: "none",
+                            }}
+                            onClick={(e) => {
+                                // setTimeout(() => {
+                                setHideTicketsCounter(hideTicketsCounter + 1);
 
-    return (
-        <>
-            {!hidden ? (
-                <div className="ticket">
-                    <Paper elevation={3}>
-                        <div className="headerTicket">
-                            <div className="title"> {ticket.title}</div>
-                            <Button
-                                className="hideTicketButton"
-                                style={{ marginLeft: "auto", fontWeight:"bolder",  textTransform: "none"}}
-                                onClick={() => {
-                                    setTimeout(() => {
-                                        setHidden(true);
-                                        setHideTicketsCounter(
-                                            hideTicketsCounter + 1
-                                        );
-                                    }, 100);
-                                }}
-                                color="primary"
-                            >
-                                Hide
-                            </Button>
+                                // }, 100);
+                            }}
+                            color="primary"
+                        >
+                            Hide
+                        </Button>
+                    </div>
+                    <div className="content">{ticket.content}</div>
+                    <div className="footerTicket">
+                        <div className="email">by {ticket.userEmail}</div>
+                        <div className="date">
+                            {convertDate(ticket.creationTime)}
                         </div>
-                        <div className="content">{ticket.content}</div>
-                        <div className="footerTicket">
-                            <div className="email">by {ticket.userEmail}</div>
-                            <div className="date">
-                                |{convertDate(ticket.creationTime)}
+                        {ticket.labels && (
+                            <div className="labels">
+                                {ticket.labels.map((label) => (
+                                    <button key={label} className="label">
+                                        {label}
+                                    </button>
+                                ))}
                             </div>
-                            {ticket.labels && (
-                                <div className="labels">
-                                    {ticket.labels.map((label) => (
-                                        <button key={label} className="label">
-                                            {label}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </Paper>
-                </div>
-            ) : null}
-        </>
-    );
+                        )}
+                    </div>
+                </Paper>
+            </div>
+        );
+    });
 }
