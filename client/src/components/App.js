@@ -4,7 +4,7 @@ import "../App.css";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import DataTitle from "./DataTitle";
-// import React from "react";
+
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -26,6 +26,7 @@ import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -94,28 +95,58 @@ function App() {
     const [valueOfNav, setValueOfNav] = useState(1);
 
     async function loadTicketsArray(param) {
-        if (param) {
-            try {
-                const { data } = await axios.get(
-                    `/api/tickets?searchText=${param.replace(" ", "+")}`
-                );
-                setTicketsArray(data);
-            } catch (e) {
-                alert(e);
+        setHideTicketsCounter(0);
+        switch (valueOfNav) {
+            case 1: {
+                if (param) {
+                    try {
+                        const { data } = await axios.get(
+                            `/api/tickets?searchText=${param.replace(" ", "+")}`
+                        );
+                        setTicketsArray(data);
+                    } catch (e) {
+                        alert(e);
+                    }
+                } else {
+                    try {
+                        const { data } = await axios.get("/api/tickets");
+                        setHideTicketsCounter(0);
+                        setTicketsArray(data);
+                    } catch (e) {
+                        alert(e);
+                    }
+                }
+                break;
             }
-        } else {
-            try {
-                const { data } = await axios.get("/api/tickets");
-                setHideTicketsCounter(0);
-                setTicketsArray(data);
-            } catch (e) {
-                alert(e);
+            case 2: {
+                try {
+                    const { data } = await axios.get("/api/tickets/done");
+                    setTicketsArray(data);
+                } catch (e) {
+                    alert(e);
+                }
+                break;
             }
+            case 3: {
+                try {
+                    const { data } = await axios.get("/api/tickets/undone");
+                    setTicketsArray(data);
+                } catch (e) {
+                    alert(e);
+                }
+                break;
+            }
+
+            default:
+                break;
         }
     }
     useEffect(() => {
         loadTicketsArray();
     }, []);
+    useEffect(() => {
+        loadTicketsArray();
+    }, [valueOfNav]);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -137,6 +168,29 @@ function App() {
         }
     }
 
+    function titlePartOfNav() {
+        let str = "";
+        switch (valueOfNav) {
+            case 1:
+                str = "All tickets";
+                break;
+            case 2:
+                str = "Done Tickets";
+                break;
+            case 3:
+                str = "Undone Tickets";
+                break;
+            case 4:
+                str = "Hide Tickets";
+                break;
+            case 5:
+                str = "Trash";
+                break;
+            default:
+                str = "All tickets";
+        }
+        return str;
+    }
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -164,7 +218,8 @@ function App() {
                         noWrap
                         style={{ marginRight: 2 + "em" }}
                     >
-                        Tickets Manager
+                        Tickets Manager -
+                        <span id={titlePartOfNav}> {titlePartOfNav()}</span>
                     </Typography>
                     <DataTitle
                         ticketsArray={ticketsArray}
@@ -175,7 +230,7 @@ function App() {
                         style={{ marginLeft: "auto", color: "white" }}
                         id="searchInput"
                         label="Search"
-                        onChange={(e) => {
+                        onKeyUp={(e) => {
                             loadTicketsArray(e.target.value);
                         }}
                     />
@@ -279,7 +334,7 @@ function App() {
                                 }
                             />
                         </ListItemIcon>
-                        <ListItemText primary={"Hide Tickets"} />
+                        <ListItemText primary={"Hide Tickets  NOTWORK"} />
                     </ListItem>
                     <Divider />
                     <ListItem
@@ -299,7 +354,7 @@ function App() {
                                 }
                             />
                         </ListItemIcon>
-                        <ListItemText primary={"Trash"} />
+                        <ListItemText primary={"Trash NOTWORK"} />
                     </ListItem>
                     <Divider />
                 </List>
@@ -314,12 +369,12 @@ function App() {
                 {ticketsArray.map((ticket) => {
                     return (
                         <Ticket
+                            key={ticket.id}
                             open={open}
                             ticket={ticket}
                             hideTicketsCounter={hideTicketsCounter}
                             setHideTicketsCounter={setHideTicketsCounter}
                             clickedDoneOrUndone={clickedDoneOrUndone}
-                            // clickedHide={clickedHide}
                             call={call}
                         />
                     );

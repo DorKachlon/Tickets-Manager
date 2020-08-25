@@ -1,5 +1,5 @@
 import React from "react";
-
+import "../dataTitle.css"
 export default function DataTitle({
     ticketsArray,
     hideTicketsCounter,

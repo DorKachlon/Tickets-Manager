@@ -6,6 +6,8 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";
 import "../ticket.css";
+
+
 export default function Ticket({
     ticket,
     setHideTicketsCounter,
@@ -48,7 +50,6 @@ export default function Ticket({
     return (
         <div
             className={classK}
-            key={ticket.id}
             style={open ? { width: "70vw" } : { width: "90vw" }}
         >
             <Paper
@@ -67,12 +68,8 @@ export default function Ticket({
                             textTransform: "none",
                         }}
                         onClick={(e) => {
-                            debugger;
-                            // setTimeout(() => {
                             setHideTicketsCounter(hideTicketsCounter + 1);
-                            // clickedHide(ticket);
                             setClassK("hiddenTicket");
-                            // }, 100);
                         }}
                         color="primary"
                     >
