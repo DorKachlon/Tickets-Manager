@@ -2,19 +2,27 @@ import React from "react";
 
 export default function DataTitle({
     ticketsArray,
-    searchHappened,
     hideTicketsCounter,
-    loadTicketsArray,
+    restore,
 }) {
-    const mainStr = `Showing ${ticketsArray.length} results`;
-    const hiddenStr = `( ${hideTicketsCounter} hidden tickets - `;
+    const mainStr = `Showing ${ticketsArray.length} results `;
     return (
         <div>
             {mainStr}
             {hideTicketsCounter !== 0 && (
-                <span id="hideTicketsCounter">{hideTicketsCounter}</span>
+                <>
+                    <span>(</span>
+                    <span id="hideTicketsCounter">{hideTicketsCounter}</span>
+                    <span> hidden tickets - </span>
+                    <button
+                        id={"restoreHideTickets"}
+                        onClick={() => restore()}
+                    >
+                        restore
+                    </button>
+                    <span>)</span>
+                </>
             )}
-            {hideTicketsCounter !== 0 && { hiddenStr }}
         </div>
     );
 }

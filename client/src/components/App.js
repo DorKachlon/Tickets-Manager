@@ -88,8 +88,7 @@ const useStyles = makeStyles((theme) => ({
 function App() {
     const [ticketsArray, setTicketsArray] = useState([]);
     let [hideTicketsCounter, setHideTicketsCounter] = useState(0);
-    let [searchHappened, setSearchHappened] = useState(false);
-
+    const [call, setCall] = useState(0);
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
@@ -125,6 +124,10 @@ function App() {
         setOpen(false);
     };
 
+    function restore() {
+        setHideTicketsCounter(0);
+        setCall(call + 1);
+    }
     async function clickedDoneOrUndone(id, doneOrUndone) {
         try {
             await axios.post(`/api/tickets/${id}/${doneOrUndone}`);
@@ -132,6 +135,13 @@ function App() {
         } catch (e) {
             alert(e);
         }
+    }
+    function clickedHide(ticket) {
+        debugger;
+        const index = ticketsArray.indexOf(ticket);
+        let arr = [...ticketsArray];
+        arr[index].hide = true;
+        setTicketsArray(arr.filter((obj) => !obj.hide));
     }
     return (
         <div className={classes.root}>
@@ -164,18 +174,14 @@ function App() {
                     </Typography>
                     <DataTitle
                         ticketsArray={ticketsArray}
-                        searchHappened={searchHappened}
                         hideTicketsCounter={hideTicketsCounter}
-                        loadTicketsArray={loadTicketsArray}
+                        restore={restore}
                     />
                     <TextField
                         style={{ marginLeft: "auto", color: "white" }}
                         id="searchInput"
                         label="Search"
                         onChange={(e) => {
-                            e.target.value !== ""
-                                ? setSearchHappened(true)
-                                : setSearchHappened(false);
                             loadTicketsArray(e.target.value);
                         }}
                     />
@@ -242,13 +248,19 @@ function App() {
                 })}
             >
                 <div className={classes.drawerHeader} />
-                <Ticket
-                    open={open}
-                    ticketsArray={ticketsArray}
-                    hideTicketsCounter={hideTicketsCounter}
-                    setHideTicketsCounter={setHideTicketsCounter}
-                    clickedDoneOrUndone={clickedDoneOrUndone}
-                />
+                {ticketsArray.map((ticket) => {
+                    return (
+                        <Ticket
+                            open={open}
+                            ticket={ticket}
+                            hideTicketsCounter={hideTicketsCounter}
+                            setHideTicketsCounter={setHideTicketsCounter}
+                            clickedDoneOrUndone={clickedDoneOrUndone}
+                            // clickedHide={clickedHide}
+                            call={call}
+                        />
+                    );
+                })}
             </main>
         </div>
     );
