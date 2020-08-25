@@ -1,11 +1,17 @@
 import React from "react";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from "@material-ui/icons/Cancel";
+import DeleteIcon from "@material-ui/icons/Delete";
 import "../ticket.css";
 export default function Ticket({
     ticketsArray,
     setHideTicketsCounter,
     hideTicketsCounter,
+    clickedDoneOrUndone,
+    open,
 }) {
     function addZero(i) {
         if (i < 10) {
@@ -30,16 +36,21 @@ export default function Ticket({
         let mm = String(today.getMonth() + 1).padStart(2, "0");
         let yyyy = today.getFullYear();
         today = dd + "/" + mm + "/" + yyyy;
-        return today + ", " + " " + h + ":" + m + ":" + s + " " + amPm;
+        return today + ", " + h + ":" + m + ":" + s + " " + amPm;
     }
-    debugger;
     return ticketsArray.map((ticket) => {
         return (
-            <div className="ticket">
+            <div
+                className="ticket"
+                key={ticket.id}
+                style={open ? { width: "70vw" } : { width: "90vw" }}
+            >
                 <Paper
                     elevation={3}
                     style={
-                        ticket.done && { backgroundColor: "rgb(144, 204, 117)" }
+                        ticket.done
+                            ? { backgroundColor: "rgb(144, 204, 117)" }
+                            : {}
                     }
                 >
                     <div className="headerTicket">
@@ -71,12 +82,38 @@ export default function Ticket({
                         {ticket.labels && (
                             <div className="labels">
                                 {ticket.labels.map((label) => (
-                                    <button key={label} className="label">
+                                    <span
+                                        disabled={true}
+                                        key={label}
+                                        className="label"
+                                    >
                                         {label}
-                                    </button>
+                                    </span>
                                 ))}
                             </div>
                         )}
+                    </div>
+                    <div className="footerButton">
+                        {!ticket.done ? (
+                            <IconButton
+                                onClick={() =>
+                                    clickedDoneOrUndone(ticket.id, "done")
+                                }
+                            >
+                                <CheckCircleIcon style={{ color: "green" }} />
+                            </IconButton>
+                        ) : (
+                            <IconButton
+                                onClick={() =>
+                                    clickedDoneOrUndone(ticket.id, "undone")
+                                }
+                            >
+                                <CancelIcon style={{ color: "red" }} />
+                            </IconButton>
+                        )}
+                        <IconButton>
+                            <DeleteIcon style={{ color: "red" }} />
+                        </IconButton>
                     </div>
                 </Paper>
             </div>

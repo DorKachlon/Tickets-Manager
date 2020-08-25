@@ -41,4 +41,17 @@ app.post("/api/tickets/:ticketId/undone", async (req, res) => {
     res.send({ updated: true });
 });
 
+app.get("/api/tickets/done", async (req, res) => {
+    const content = await fs.readFile(filePath);
+    const arr = JSON.parse(content);
+    const filterArr = arr.filter((obj) => obj.done);
+    res.send(filterArr);
+});
+
+app.get("/api/tickets/undone", async (req, res) => {
+    const content = await fs.readFile(filePath);
+    const arr = JSON.parse(content);
+    const filterArr = arr.filter((obj) => !obj.done);
+    res.send(filterArr);
+});
 module.exports = app;

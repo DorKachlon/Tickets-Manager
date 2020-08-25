@@ -85,18 +85,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
 function App() {
     const [ticketsArray, setTicketsArray] = useState([]);
     let [hideTicketsCounter, setHideTicketsCounter] = useState(0);
     let [searchHappened, setSearchHappened] = useState(false);
-    
+
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
 
     async function loadTicketsArray(param) {
-        debugger;
         if (param) {
             try {
                 const { data } = await axios.get(
@@ -127,118 +125,132 @@ function App() {
         setOpen(false);
     };
 
+    async function clickedDoneOrUndone(id, doneOrUndone) {
+        try {
+            await axios.post(`/api/tickets/${id}/${doneOrUndone}`);
+            loadTicketsArray();
+        } catch (e) {
+            alert(e);
+        }
+    }
     return (
         <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-            position="fixed"
-            className={clsx(classes.appBar, {
-                [classes.appBarShift]: open,
-            })}
-        >
-            <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerOpen}
-                    edge="start"
-                    className={clsx(
-                        classes.menuButton,
-                        open && classes.hide
-                    )}
-                >
-                    <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" noWrap style={{marginRight:"2em"}}>
-                    Tickets Manager
-                </Typography>
-                <DataTitle
-                ticketsArray={ticketsArray}
-                searchHappened={searchHappened}
-                hideTicketsCounter={hideTicketsCounter}
-                loadTicketsArray={loadTicketsArray}
-            />
-                <TextField
-                style={{marginLeft:"auto", color:"white"}}
-                id="searchInput"
-                label="Search"
-                onChange={(e) => {
-                    e.target.value !== ""
-                        ? setSearchHappened(true)
-                        : setSearchHappened(false);
-                    loadTicketsArray(e.target.value);
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                className={clsx(classes.appBar, {
+                    [classes.appBarShift]: open,
+                })}
+            >
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        className={clsx(
+                            classes.menuButton,
+                            open && classes.hide
+                        )}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        style={{ marginRight: 2 + "em" }}
+                    >
+                        Tickets Manager
+                    </Typography>
+                    <DataTitle
+                        ticketsArray={ticketsArray}
+                        searchHappened={searchHappened}
+                        hideTicketsCounter={hideTicketsCounter}
+                        loadTicketsArray={loadTicketsArray}
+                    />
+                    <TextField
+                        style={{ marginLeft: "auto", color: "white" }}
+                        id="searchInput"
+                        label="Search"
+                        onChange={(e) => {
+                            e.target.value !== ""
+                                ? setSearchHappened(true)
+                                : setSearchHappened(false);
+                            loadTicketsArray(e.target.value);
+                        }}
+                    />
+                </Toolbar>
+            </AppBar>
+            <Drawer
+                className={classes.drawer}
+                variant="persistent"
+                anchor="left"
+                open={open}
+                classes={{
+                    paper: classes.drawerPaper,
                 }}
-            />
-            </Toolbar>
-        </AppBar>
-        <Drawer
-            className={classes.drawer}
-            variant="persistent"
-            anchor="left"
-            open={open}
-            classes={{
-                paper: classes.drawerPaper,
-            }}
-        >
-            <div className={classes.drawerHeader}>
-                <IconButton onClick={handleDrawerClose}>
-                    {theme.direction === "ltr" ? (
-                        <ChevronLeftIcon />
-                    ) : (
-                        <ChevronRightIcon />
-                    )}
-                </IconButton>
-            </div>
-            <Divider />
-            <List>
-                <ListItem button key={"All Tickets"}>
-                    <ListItemIcon>
-                        <AllInboxIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"All Tickets"} />
-                </ListItem>
-                <ListItem button key={"Done Tickets"}>
-                    <ListItemIcon>
-                        <CheckCircleIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"Done Tickets"} />
-                </ListItem>
-                <ListItem button key={"Undone Tickets"}>
-                    <ListItemIcon>
-                        <SmsFailedIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"Undone Tickets"} />
-                </ListItem>
-                <ListItem button key={"Hide Tickets"}>
-                    <ListItemIcon>
-                        <VisibilityOffIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"Hide Tickets"} />
-                </ListItem>
-                <ListItem button key={"Trash"}>
-                    <ListItemIcon>
-                        <DeleteIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"Trash"} />
-                </ListItem>
-            </List>
-            
-            <Divider />
-        </Drawer>
-        <main
-            className={clsx(classes.content, {
-                [classes.contentShift]: open,
-            })}
-        >
-            <div className={classes.drawerHeader} />
-            <Ticket
-                ticketsArray={ticketsArray}
-                hideTicketsCounter={hideTicketsCounter}
-                setHideTicketsCounter={setHideTicketsCounter}
-            />
-        </main>
-    </div>
+            >
+                <div className={classes.drawerHeader}>
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === "ltr" ? (
+                            <ChevronLeftIcon />
+                        ) : (
+                            <ChevronRightIcon />
+                        )}
+                    </IconButton>
+                </div>
+                <Divider />
+                <List>
+                    <ListItem button key={"All Tickets"}>
+                        <ListItemIcon>
+                            <AllInboxIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"All Tickets"} />
+                    </ListItem>
+                    <ListItem button key={"Done Tickets"}>
+                        <ListItemIcon>
+                            <CheckCircleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Done Tickets"} />
+                    </ListItem>
+                    <ListItem button key={"Undone Tickets"}>
+                        <ListItemIcon>
+                            <SmsFailedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Undone Tickets"} />
+                    </ListItem>
+                    <ListItem button key={"Hide Tickets"}>
+                        <ListItemIcon>
+                            <VisibilityOffIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Hide Tickets"} />
+                    </ListItem>
+                    <ListItem button key={"Trash"}>
+                        <ListItemIcon>
+                            <DeleteIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Trash"} />
+                    </ListItem>
+                </List>
 
+                <Divider />
+            </Drawer>
+            <main
+                style={{ width: "90vw" }}
+                className={clsx(classes.content, {
+                    [classes.contentShift]: open,
+                })}
+            >
+                <div className={classes.drawerHeader} />
+                <Ticket
+                    open={open}
+                    ticketsArray={ticketsArray}
+                    hideTicketsCounter={hideTicketsCounter}
+                    setHideTicketsCounter={setHideTicketsCounter}
+                    clickedDoneOrUndone={clickedDoneOrUndone}
+                />
+            </main>
+        </div>
     );
 }
 
