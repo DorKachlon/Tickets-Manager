@@ -27,7 +27,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -92,6 +91,7 @@ function App() {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const [valueOfNav, setValueOfNav] = useState(1);
 
     async function loadTicketsArray(param) {
         if (param) {
@@ -136,13 +136,7 @@ function App() {
             alert(e);
         }
     }
-    function clickedHide(ticket) {
-        debugger;
-        const index = ticketsArray.indexOf(ticket);
-        let arr = [...ticketsArray];
-        arr[index].hide = true;
-        setTicketsArray(arr.filter((obj) => !obj.hide));
-    }
+
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -205,41 +199,110 @@ function App() {
                         )}
                     </IconButton>
                 </div>
-                <Divider />
+
                 <List>
-                    <ListItem button key={"All Tickets"}>
+                    <Divider />
+                    <ListItem
+                        button
+                        key={"All Tickets"}
+                        style={
+                            valueOfNav === 1
+                                ? { backgroundColor: "#3F51B5", color: "white" }
+                                : {}
+                        }
+                        onClick={() => setValueOfNav(1)}
+                    >
                         <ListItemIcon>
-                            <AllInboxIcon />
+                            <AllInboxIcon
+                                style={
+                                    valueOfNav === 1 ? { color: "white" } : {}
+                                }
+                            />
                         </ListItemIcon>
                         <ListItemText primary={"All Tickets"} />
                     </ListItem>
-                    <ListItem button key={"Done Tickets"}>
+                    <Divider />
+                    <ListItem
+                        button
+                        key={"Done Tickets"}
+                        style={
+                            valueOfNav === 2
+                                ? { backgroundColor: "#3F51B5", color: "white" }
+                                : {}
+                        }
+                        onClick={() => setValueOfNav(2)}
+                    >
                         <ListItemIcon>
-                            <CheckCircleIcon />
+                            <CheckCircleIcon
+                                style={
+                                    valueOfNav === 2 ? { color: "white" } : {}
+                                }
+                            />
                         </ListItemIcon>
                         <ListItemText primary={"Done Tickets"} />
                     </ListItem>
-                    <ListItem button key={"Undone Tickets"}>
+                    <Divider />
+                    <ListItem
+                        button
+                        key={"Undone Tickets"}
+                        style={
+                            valueOfNav === 3
+                                ? { backgroundColor: "#3F51B5", color: "white" }
+                                : {}
+                        }
+                        onClick={() => setValueOfNav(3)}
+                    >
                         <ListItemIcon>
-                            <SmsFailedIcon />
+                            <SmsFailedIcon
+                                style={
+                                    valueOfNav === 3 ? { color: "white" } : {}
+                                }
+                            />
                         </ListItemIcon>
                         <ListItemText primary={"Undone Tickets"} />
                     </ListItem>
-                    <ListItem button key={"Hide Tickets"}>
+                    <Divider />
+                    <ListItem
+                        button
+                        key={"Hide Tickets"}
+                        style={
+                            valueOfNav === 4
+                                ? { backgroundColor: "#3F51B5", color: "white" }
+                                : {}
+                        }
+                        onClick={() => setValueOfNav(4)}
+                    >
                         <ListItemIcon>
-                            <VisibilityOffIcon />
+                            <VisibilityOffIcon
+                                style={
+                                    valueOfNav === 4 ? { color: "white" } : {}
+                                }
+                            />
                         </ListItemIcon>
                         <ListItemText primary={"Hide Tickets"} />
                     </ListItem>
-                    <ListItem button key={"Trash"}>
+                    <Divider />
+                    <ListItem
+                        button
+                        key={"Trash"}
+                        style={
+                            valueOfNav === 5
+                                ? { backgroundColor: "#3F51B5", color: "white" }
+                                : {}
+                        }
+                        onClick={() => setValueOfNav(5)}
+                    >
                         <ListItemIcon>
-                            <DeleteIcon />
+                            <DeleteIcon
+                                style={
+                                    valueOfNav === 5 ? { color: "white" } : {}
+                                }
+                            />
                         </ListItemIcon>
                         <ListItemText primary={"Trash"} />
                     </ListItem>
+                    <Divider />
                 </List>
-
-                <Divider />
             </Drawer>
             <main
                 style={{ width: "90vw" }}

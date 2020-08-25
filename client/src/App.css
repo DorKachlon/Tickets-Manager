@@ -1,0 +1,10 @@
+.MuiBottomNavigation-root{
+    display: flex;
+    flex-direction: column;
+}
+.MuiBottomNavigationAction-root{
+    display: flex;
+}
+.MuiBottomNavigationAction-wrapper{
+    display: flex;
+}
