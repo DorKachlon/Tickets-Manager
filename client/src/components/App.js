@@ -26,7 +26,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
-
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -94,28 +93,27 @@ function App() {
     const [open, setOpen] = useState(false);
     const [valueOfNav, setValueOfNav] = useState(1);
 
-    async function loadTicketsArray(param) {
-    if (param) {
-        try {
-            const { data } = await axios.get(
-                `/api/tickets?searchText=${param.replace(" ", "+")}`
-            );
-            setTicketsArray(data);
-        } catch (e) {
-            alert(e);
-        }
-    } else {
-        try {
-            const { data } = await axios.get("/api/tickets");
-            setHideTicketsCounter(0);
-            setTicketsArray(data);
-        } catch (e) {
-            alert(e);
+    async function loadTicketsArray2(param) {
+        if (param) {
+            try {
+                const { data } = await axios.get(
+                    `/api/tickets?searchText=${param.replace(" ", "+")}`
+                );
+                setTicketsArray(data);
+            } catch (e) {
+                alert(e);
+            }
+        } else {
+            try {
+                const { data } = await axios.get("/api/tickets");
+                setHideTicketsCounter(0);
+                setTicketsArray(data);
+            } catch (e) {
+                alert(e);
+            }
         }
     }
-}
     // async function loadTicketsArray(param) {
-    //     setHideTicketsCounter(0);
     //     switch (valueOfNav) {
     //         case 1: {
     //             if (param) {
@@ -130,7 +128,6 @@ function App() {
     //             } else {
     //                 try {
     //                     const { data } = await axios.get("/api/tickets");
-    //                     setHideTicketsCounter(0);
     //                     setTicketsArray(data);
     //                 } catch (e) {
     //                     alert(e);
@@ -160,16 +157,62 @@ function App() {
     //         default:
     //             break;
     //     }
+    //     setHideTicketsCounter(0);
     // }
-
-    useEffect(() => {
-        loadTicketsArray();
-    }, []);
 
     // useEffect(() => {
     //     loadTicketsArray();
-    // }, [valueOfNav]);
-    
+    // }, []);
+
+    useEffect(() => {
+        async function loadTicketsArray(param) {
+            debugger;
+            if (param) {
+                try {
+                    const { data } = await axios.get(
+                        `/api/tickets?searchText=${param.replace(" ", "+")}`
+                    );
+                    await setTicketsArray(data);
+                } catch (e) {
+                    alert(e);
+                }
+            } else {
+                try {
+                    switch (valueOfNav) {
+                        case 1: {
+                            const { data } = await axios.get("/api/tickets");
+                            setTicketsArray(data);
+                            break;
+                        }
+                        case 2: {
+                            const { data } = await axios.get(
+                                "/api/tickets/done"
+                            );
+                            setTicketsArray(data);
+                            break;
+                        }
+                        case 3: {
+                            const { data } = await axios.get(
+                                "/api/tickets/undone"
+                            );
+                            setTicketsArray(data);
+                            break;
+                        }
+                        default: {
+                            const { data } = await axios.get("/api/tickets");
+                            setTicketsArray(data);
+                            break;
+                        }
+                    }
+                } catch (e) {
+                    alert(e);
+                }
+            }
+            setHideTicketsCounter(0);
+        }
+        loadTicketsArray();
+    }, [valueOfNav]);
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -185,7 +228,7 @@ function App() {
     async function clickedDoneOrUndone(id, doneOrUndone) {
         try {
             await axios.post(`/api/tickets/${id}/${doneOrUndone}`);
-            loadTicketsArray();
+            loadTicketsArray2();
         } catch (e) {
             alert(e);
         }
@@ -254,7 +297,7 @@ function App() {
                         id="searchInput"
                         label="Search"
                         onKeyUp={(e) => {
-                            loadTicketsArray(e.target.value);
+                            loadTicketsArray2(e.target.value);
                         }}
                     />
                 </Toolbar>

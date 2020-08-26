@@ -49,18 +49,24 @@
     margin-top: 1em;
     background-color: rgba(211, 211, 211, 0.5);
     border-radius: 1em 1em 0 0;
-    display: none;
+    /* display: none; */
+    display: flex;
     justify-content: center;
+    visibility: hidden;
 }
 .MuiPaper-root:hover > .footerButton {
-    display: flex;
+    /* display: flex; */
+    visibility: visible;
 }
-
+.MuiPaper-root {
+    transition: ease-in-out;
+    transition: visability 1s;
+}
 .hiddenTicket {
     display: none;
 }
 
-.read-more-button{
+.read-more-button {
     color: blue;
     cursor: pointer;
     margin-top: 0.5em;
