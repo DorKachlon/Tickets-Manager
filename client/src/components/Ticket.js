@@ -14,7 +14,6 @@ export default function Ticket({
     hideTicketsCounter,
     clickedDoneOrUndone,
     open,
-    clickedHide,
     call,
 }) {
     const [classK, setClassK] = useState("ticket");

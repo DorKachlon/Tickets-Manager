@@ -1,4 +1,7 @@
-#titlePartOfNav{
+#titlePartOfNav {
     background-color: white;
-    
+    border-radius: 1em;
+    color: black;
+    padding: 0 1em;
+    margin-left: 0.5em;
 }

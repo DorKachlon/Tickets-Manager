@@ -95,58 +95,81 @@ function App() {
     const [valueOfNav, setValueOfNav] = useState(1);
 
     async function loadTicketsArray(param) {
-        setHideTicketsCounter(0);
-        switch (valueOfNav) {
-            case 1: {
-                if (param) {
-                    try {
-                        const { data } = await axios.get(
-                            `/api/tickets?searchText=${param.replace(" ", "+")}`
-                        );
-                        setTicketsArray(data);
-                    } catch (e) {
-                        alert(e);
-                    }
-                } else {
-                    try {
-                        const { data } = await axios.get("/api/tickets");
-                        setHideTicketsCounter(0);
-                        setTicketsArray(data);
-                    } catch (e) {
-                        alert(e);
-                    }
-                }
-                break;
-            }
-            case 2: {
-                try {
-                    const { data } = await axios.get("/api/tickets/done");
-                    setTicketsArray(data);
-                } catch (e) {
-                    alert(e);
-                }
-                break;
-            }
-            case 3: {
-                try {
-                    const { data } = await axios.get("/api/tickets/undone");
-                    setTicketsArray(data);
-                } catch (e) {
-                    alert(e);
-                }
-                break;
-            }
-
-            default:
-                break;
+    if (param) {
+        try {
+            const { data } = await axios.get(
+                `/api/tickets?searchText=${param.replace(" ", "+")}`
+            );
+            setTicketsArray(data);
+        } catch (e) {
+            alert(e);
+        }
+    } else {
+        try {
+            const { data } = await axios.get("/api/tickets");
+            setHideTicketsCounter(0);
+            setTicketsArray(data);
+        } catch (e) {
+            alert(e);
         }
     }
+}
+    // async function loadTicketsArray(param) {
+    //     setHideTicketsCounter(0);
+    //     switch (valueOfNav) {
+    //         case 1: {
+    //             if (param) {
+    //                 try {
+    //                     const { data } = await axios.get(
+    //                         `/api/tickets?searchText=${param.replace(" ", "+")}`
+    //                     );
+    //                     await setTicketsArray(data);
+    //                 } catch (e) {
+    //                     alert(e);
+    //                 }
+    //             } else {
+    //                 try {
+    //                     const { data } = await axios.get("/api/tickets");
+    //                     setHideTicketsCounter(0);
+    //                     setTicketsArray(data);
+    //                 } catch (e) {
+    //                     alert(e);
+    //                 }
+    //             }
+    //             break;
+    //         }
+    //         case 2: {
+    //             try {
+    //                 const { data } = await axios.get("/api/tickets/done");
+    //                 setTicketsArray(data);
+    //             } catch (e) {
+    //                 alert(e);
+    //             }
+    //             break;
+    //         }
+    //         case 3: {
+    //             try {
+    //                 const { data } = await axios.get("/api/tickets/undone");
+    //                 setTicketsArray(data);
+    //             } catch (e) {
+    //                 alert(e);
+    //             }
+    //             break;
+    //         }
+
+    //         default:
+    //             break;
+    //     }
+    // }
+
     useEffect(() => {
         loadTicketsArray();
     }, []);
-    useEffect(() => {
-        loadTicketsArray();
-    }, [valueOfNav]);
+
+    // useEffect(() => {
+    //     loadTicketsArray();
+    // }, [valueOfNav]);
+    
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -219,7 +242,7 @@ function App() {
                         style={{ marginRight: 2 + "em" }}
                     >
                         Tickets Manager -
-                        <span id={titlePartOfNav}> {titlePartOfNav()}</span>
+                        <span id={"titlePartOfNav"}> {titlePartOfNav()}</span>
                     </Typography>
                     <DataTitle
                         ticketsArray={ticketsArray}
