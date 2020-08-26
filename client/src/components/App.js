@@ -146,6 +146,7 @@ function App() {
             } catch (e) {
                 alert(e);
             }
+            setValueOfNav(6);
         } else {
             try {
                 const { data } = await axios.get("/api/tickets");
@@ -206,7 +207,7 @@ function App() {
             }
             setHideTicketsCounter(0);
         }
-        loadTicketsArray();
+        if (valueOfNav !== 6) loadTicketsArray();
     }, [valueOfNav]);
 
     const handleDrawerOpen = () => {
@@ -247,6 +248,9 @@ function App() {
                 break;
             case 5:
                 str = "Trash";
+                break;
+            case 6:
+                str = "All tickets";
                 break;
             default:
                 str = "All tickets";
@@ -344,7 +348,7 @@ function App() {
                         button
                         key={"All Tickets"}
                         style={
-                            valueOfNav === 1
+                            valueOfNav === 1 || valueOfNav === 6
                                 ? { backgroundColor: "#3F51B5", color: "white" }
                                 : {}
                         }
