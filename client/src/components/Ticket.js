@@ -6,7 +6,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";
 import "../ticket.css";
-
+import ReadMoreReact from "read-more-react";
 
 export default function Ticket({
     ticket,
@@ -75,7 +75,17 @@ export default function Ticket({
                         Hide
                     </Button>
                 </div>
-                <div className="content">{ticket.content}</div>
+                <div className="content">
+                    <ReadMoreReact
+                        style={{ color: "blue" }}
+                        text={ticket.content}
+                        min={500}
+                        ideal={500}
+                        max={10000}
+                        readMoreText="see more"
+                    />
+                </div>
+                {/* <div className="content">{ticket.content}</div> */}
                 <div className="footerTicket">
                     <div className="email">by {ticket.userEmail}</div>
                     <div className="date">

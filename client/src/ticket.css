@@ -59,3 +59,9 @@
 .hiddenTicket {
     display: none;
 }
+
+.read-more-button{
+    color: blue;
+    cursor: pointer;
+    margin-top: 0.5em;
+}
