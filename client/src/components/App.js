@@ -25,6 +25,9 @@ import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -92,14 +95,54 @@ function App() {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [valueOfNav, setValueOfNav] = useState(1);
+    const [selectValue, setSelectValue] = useState(10);
 
-    async function loadTicketsArray2(param) {
-        if (param) {
+    const handleChange = (event) => {
+        console.log(event.target.value);
+        setSelectValue(event.target.value);
+    };
+    async function loadTicketsArray2(inputValue) {
+        if (inputValue) {
             try {
-                const { data } = await axios.get(
-                    `/api/tickets?searchText=${param.replace(" ", "+")}`
-                );
-                setTicketsArray(data);
+                switch (selectValue) {
+                    case 10: {
+                        const { data } = await axios.get(
+                            `/api/tickets?searchText=${encodeURIComponent(
+                                inputValue
+                            )}`
+                        );
+                        setTicketsArray(data);
+                        break;
+                    }
+                    case 20: {
+                        const { data } = await axios.get(
+                            `/api/tickets?searchContent=${encodeURIComponent(
+                                inputValue
+                            )}`
+                        );
+                        setTicketsArray(data);
+                        break;
+                    }
+                    case 30: {
+                        const { data } = await axios.get(
+                            `/api/tickets?Email=${encodeURIComponent(
+                                inputValue
+                            )}`
+                        );
+                        setTicketsArray(data);
+                        break;
+                    }
+
+                    default: {
+                        const { data } = await axios.get(
+                            `/api/tickets?searchText=${encodeURIComponent(
+                                inputValue
+                            )}`
+                        );
+                        setTicketsArray(data);
+                        break;
+                    }
+                }
             } catch (e) {
                 alert(e);
             }
@@ -113,64 +156,17 @@ function App() {
             }
         }
     }
-    // async function loadTicketsArray(param) {
-    //     switch (valueOfNav) {
-    //         case 1: {
-    //             if (param) {
-    //                 try {
-    //                     const { data } = await axios.get(
-    //                         `/api/tickets?searchText=${param.replace(" ", "+")}`
-    //                     );
-    //                     await setTicketsArray(data);
-    //                 } catch (e) {
-    //                     alert(e);
-    //                 }
-    //             } else {
-    //                 try {
-    //                     const { data } = await axios.get("/api/tickets");
-    //                     setTicketsArray(data);
-    //                 } catch (e) {
-    //                     alert(e);
-    //                 }
-    //             }
-    //             break;
-    //         }
-    //         case 2: {
-    //             try {
-    //                 const { data } = await axios.get("/api/tickets/done");
-    //                 setTicketsArray(data);
-    //             } catch (e) {
-    //                 alert(e);
-    //             }
-    //             break;
-    //         }
-    //         case 3: {
-    //             try {
-    //                 const { data } = await axios.get("/api/tickets/undone");
-    //                 setTicketsArray(data);
-    //             } catch (e) {
-    //                 alert(e);
-    //             }
-    //             break;
-    //         }
-
-    //         default:
-    //             break;
-    //     }
-    //     setHideTicketsCounter(0);
-    // }
-
-    // useEffect(() => {
-    //     loadTicketsArray();
-    // }, []);
 
     useEffect(() => {
-        async function loadTicketsArray(param) {
+        async function loadTicketsArray(inputValue) {
             debugger;
-            if (param) {
+            if (inputValue) {
                 try {
                     const { data } = await axios.get(
-                        `/api/tickets?searchText=${param.replace(" ", "+")}`
+                        `/api/tickets?searchText=${inputValue.replace(
+                            " ",
+                            "+"
+                        )}`
                     );
                     await setTicketsArray(data);
                 } catch (e) {
@@ -293,13 +289,34 @@ function App() {
                         restore={restore}
                     />
                     <TextField
-                        style={{ marginLeft: "auto", color: "white" }}
+                        style={{
+                            marginLeft: "auto",
+                            color: "white",
+                            marginRight: "1.5em",
+                        }}
                         id="searchInput"
                         label="Search"
                         onKeyUp={(e) => {
                             loadTicketsArray2(e.target.value);
                         }}
                     />
+                    <FormControl
+                        variant="outlined"
+                        className={classes.formControl}
+                    >
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectValue}
+                            onChange={handleChange}
+                            style={{ padding: "0 0.5em" }}
+                            inputProps={{ "aria-label": "Without label" }}
+                        >
+                            <MenuItem value={10}>Title</MenuItem>
+                            <MenuItem value={20}>Content</MenuItem>
+                            <MenuItem value={30}>E-mail</MenuItem>
+                        </Select>
+                    </FormControl>
                 </Toolbar>
             </AppBar>
             <Drawer

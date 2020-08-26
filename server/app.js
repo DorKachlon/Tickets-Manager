@@ -9,13 +9,27 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //http://localhost:8080/api/tickets?searchText=Need+a+Little
+//http://localhost:8080/api/tickets?searchContent=my+code+to+display+commas
+//http://localhost:8080/api/tickets?Email=jug%40nesetal.af
 app.get("/api/tickets", async (req, res) => {
     const content = await fs.readFile(filePath);
     const arr = JSON.parse(content);
     const searchText = req.query.searchText;
+    const searchContent = req.query.searchContent;
+    const email = req.query.Email;
     if (searchText) {
         const filterArr = arr.filter((obj) =>
             obj.title.toLowerCase().includes(searchText.toLowerCase())
+        );
+        res.send(filterArr);
+    } else if (searchContent) {
+        const filterArr = arr.filter((obj) =>
+            obj.content.toLowerCase().includes(searchContent.toLowerCase())
+        );
+        res.send(filterArr);
+    } else if (email) {
+        const filterArr = arr.filter((obj) =>
+            obj.userEmail.toLowerCase().includes(email.toLowerCase())
         );
         res.send(filterArr);
     } else {
