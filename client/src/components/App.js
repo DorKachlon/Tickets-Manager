@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import Ticket from "./Ticket";
 import HeaderBar from "./HeaderBar";
 import SideNavbar from "./SideNavbar";
-import useStyles from"../useStyles";
+import useStyles from "../useStyles";
 
 function App() {
     const [ticketsArray, setTicketsArray] = useState([]);
@@ -16,6 +16,7 @@ function App() {
     const [open, setOpen] = useState(false);
     const [valueOfNav, setValueOfNav] = useState(1);
     const [selectValue, setSelectValue] = useState("searchText");
+    const [hideTicketsArray, setHideTicketsArray] = useState([]);
 
     async function loadTicketsArray2(inputValue) {
         if (inputValue) {
@@ -48,64 +49,44 @@ function App() {
             }
         }
     }
-
-    useEffect(() => {
-        async function loadTicketsArray(inputValue) {
-            if (inputValue) {
-                try {
-                    const { data } = await axios.get(
-                        `/api/tickets?searchText=${inputValue.replace(
-                            " ",
-                            "+"
-                        )}`
-                    );
-                    await setTicketsArray(data);
-                } catch (e) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: { e },
-                    });
+    async function loadTicketsArray() {
+        try {
+            switch (valueOfNav) {
+                case 1: {
+                    const { data } = await axios.get("/api/tickets");
+                    setTicketsArray(data);
+                    break;
                 }
-            } else {
-                try {
-                    switch (valueOfNav) {
-                        case 1: {
-                            const { data } = await axios.get("/api/tickets");
-                            setTicketsArray(data);
-                            break;
-                        }
-                        case 2: {
-                            const { data } = await axios.get(
-                                "/api/tickets/done"
-                            );
-                            setTicketsArray(data);
-                            break;
-                        }
-                        case 3: {
-                            const { data } = await axios.get(
-                                "/api/tickets/undone"
-                            );
-                            setTicketsArray(data);
-                            break;
-                        }
-                        default: {
-                            const { data } = await axios.get("/api/tickets");
-                            setTicketsArray(data);
-                            break;
-                        }
-                    }
-                } catch (e) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: { e },
-                    });
+                case 2: {
+                    const { data } = await axios.get("/api/tickets/done");
+                    setTicketsArray(data);
+                    break;
+                }
+                case 3: {
+                    const { data } = await axios.get("/api/tickets/undone");
+                    setTicketsArray(data);
+                    break;
+                }
+                default: {
+                    const { data } = await axios.get("/api/tickets");
+                    setTicketsArray(data);
+                    break;
                 }
             }
-            setHideTicketsCounter(0);
+        } catch (e) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: { e },
+            });
         }
-        if (valueOfNav !== 6) loadTicketsArray();
+
+        setHideTicketsCounter(0);
+    }
+    useEffect(() => {
+        debugger;
+        if ([1, 2, 3].includes(valueOfNav)) loadTicketsArray();
+        if (valueOfNav === 4) setTicketsArray(hideTicketsArray);
     }, [valueOfNav]);
 
     const handleDrawerOpen = () => {
@@ -123,7 +104,7 @@ function App() {
     async function clickedDoneOrUndone(id, doneOrUndone) {
         try {
             await axios.post(`/api/tickets/${id}/${doneOrUndone}`);
-            loadTicketsArray2();
+            loadTicketsArray();
         } catch (e) {
             Swal.fire({
                 icon: "error",
@@ -168,6 +149,8 @@ function App() {
                         setHideTicketsCounter={setHideTicketsCounter}
                         clickedDoneOrUndone={clickedDoneOrUndone}
                         call={call}
+                        hideTicketsArray={hideTicketsArray}
+                        setHideTicketsArray={setHideTicketsArray}
                     />
                 ))}
             </main>

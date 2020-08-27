@@ -15,6 +15,8 @@ export default function Ticket({
     clickedDoneOrUndone,
     open,
     call,
+    hideTicketsArray,
+    setHideTicketsArray,
 }) {
     const [classK, setClassK] = useState("ticket");
     function addZero(i) {
@@ -69,6 +71,9 @@ export default function Ticket({
                         onClick={() => {
                             setHideTicketsCounter(hideTicketsCounter + 1);
                             setClassK("hiddenTicket");
+                            let newArr = [...hideTicketsArray];
+                            newArr.push(ticket);
+                            setHideTicketsArray(newArr);
                         }}
                         color="primary"
                     >
