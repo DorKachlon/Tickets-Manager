@@ -76,6 +76,7 @@ function App() {
   const [valueOfNav, setValueOfNav] = useState(1);
   const [selectValue, setSelectValue] = useState('searchText');
 
+  
   async function loadTicketsArray2(inputValue) {
     if (inputValue) {
       try {
