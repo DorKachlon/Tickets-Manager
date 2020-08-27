@@ -12,11 +12,11 @@ function App() {
     const [ticketsArray, setTicketsArray] = useState([]);
     const [hideTicketsCounter, setHideTicketsCounter] = useState(0);
     const [call, setCall] = useState(0);
-    const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [valueOfNav, setValueOfNav] = useState(1);
     const [selectValue, setSelectValue] = useState("searchText");
     const [hideTicketsArray, setHideTicketsArray] = useState([]);
+    const classes = useStyles();
 
     async function loadTicketsArray2(inputValue) {
         if (inputValue) {
@@ -86,7 +86,7 @@ function App() {
             });
         }
 
-        setHideTicketsCounter(0);
+        restore();
     }
     useEffect(() => {
         if ([1, 2, 3, 5].includes(valueOfNav)) loadTicketsArray();
