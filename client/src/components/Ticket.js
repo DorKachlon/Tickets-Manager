@@ -5,7 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";
-import "../ticket.css";
+import "../style/ticket.css";
 import ReadMoreReact from "read-more-react";
 
 export default function Ticket({
