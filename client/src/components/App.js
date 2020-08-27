@@ -23,7 +23,6 @@ function App() {
     setCall(call + 1);
   }
   async function loadTicketsArray2(inputValue) {
-    if (inputValue) {
       try {
         const { data } = await axios.get(
           `/api/tickets?${selectValue}=${encodeURIComponent(
@@ -39,19 +38,6 @@ function App() {
         });
       }
       setValueOfNav(6);
-    } else {
-      try {
-        const { data } = await axios.get('/api/tickets');
-        setHideTicketsCounter(0);
-        setTicketsArray(data);
-      } catch (e) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: `${e.message}`,
-        });
-      }
-    }
   }
   async function loadTicketsArray() {
     try {
