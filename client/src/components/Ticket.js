@@ -7,6 +7,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";
 import "../style/ticket.css";
 import ReadMoreReact from "read-more-react";
+import AddToQueueIcon from "@material-ui/icons/AddToQueue";
 
 export default function Ticket({
     ticket,
@@ -17,6 +18,7 @@ export default function Ticket({
     call,
     hideTicketsArray,
     setHideTicketsArray,
+    clickedDeleteOrUndelete,
 }) {
     const [classK, setClassK] = useState("ticket");
     function addZero(i) {
@@ -109,7 +111,14 @@ export default function Ticket({
                         </div>
                     )}
                 </div>
-                <div className="footerButton">
+                <div
+                    className="footerButton"
+                    style={
+                        ticket.delete
+                            ? { backgroundColor: "rgba(211, 109, 109, 0.84)" }
+                            : {}
+                    }
+                >
                     {!ticket.done ? (
                         <IconButton
                             onClick={() =>
@@ -127,9 +136,23 @@ export default function Ticket({
                             <CancelIcon style={{ color: "red" }} />
                         </IconButton>
                     )}
-                    <IconButton>
-                        <DeleteIcon style={{ color: "red" }} />
-                    </IconButton>
+                    {!ticket.delete ? (
+                        <IconButton
+                            onClick={() =>
+                                clickedDeleteOrUndelete(ticket.id, "delete")
+                            }
+                        >
+                            <DeleteIcon style={{ color: "red" }} />
+                        </IconButton>
+                    ) : (
+                        <IconButton
+                            onClick={() =>
+                                clickedDeleteOrUndelete(ticket.id, "undelete")
+                            }
+                        >
+                            <AddToQueueIcon style={{ color: "green" }} />
+                        </IconButton>
+                    )}
                 </div>
             </Paper>
         </div>

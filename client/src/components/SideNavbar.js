@@ -141,7 +141,7 @@ export default function SideNavbar({
                 }
               />
             </ListItemIcon>
-            <ListItemText primary="Trash NOTWORK" />
+            <ListItemText primary="Trash" />
           </ListItem>
           <Divider />
         </List>

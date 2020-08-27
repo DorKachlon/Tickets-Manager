@@ -31,7 +31,7 @@ function App() {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: { e },
+                    text: `${e.message}`,
                 });
             }
             setValueOfNav(6);
@@ -44,7 +44,7 @@ function App() {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: { e },
+                    text: `${e.message}`,
                 });
             }
         }
@@ -54,16 +54,21 @@ function App() {
             switch (valueOfNav) {
                 case 1: {
                     const { data } = await axios.get("/api/tickets");
-                    setTicketsArray(data);
+                    setTicketsArray(data.filter((obj) => !obj.delete));
                     break;
                 }
                 case 2: {
                     const { data } = await axios.get("/api/tickets/done");
-                    setTicketsArray(data);
+                    setTicketsArray(data.filter((obj) => !obj.delete));
                     break;
                 }
                 case 3: {
                     const { data } = await axios.get("/api/tickets/undone");
+                    setTicketsArray(data.filter((obj) => !obj.delete));
+                    break;
+                }
+                case 5: {
+                    const { data } = await axios.get("/api/tickets/deleted");
                     setTicketsArray(data);
                     break;
                 }
@@ -77,15 +82,14 @@ function App() {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: { e },
+                text: `${e.message}`,
             });
         }
 
         setHideTicketsCounter(0);
     }
     useEffect(() => {
-        debugger;
-        if ([1, 2, 3].includes(valueOfNav)) loadTicketsArray();
+        if ([1, 2, 3, 5].includes(valueOfNav)) loadTicketsArray();
         if (valueOfNav === 4) setTicketsArray(hideTicketsArray);
     }, [valueOfNav]);
 
@@ -109,11 +113,22 @@ function App() {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: { e },
+                text: `${e.message}`,
             });
         }
     }
-
+    async function clickedDeleteOrUndelete(id, deleteOrUndelete) {
+        try {
+            await axios.post(`/api/tickets/${id}/${deleteOrUndelete}`);
+            loadTicketsArray();
+        } catch (e) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `${e.message}`,
+            });
+        }
+    }
     return (
         <div className={classes.root}>
             <HeaderBar
@@ -151,6 +166,7 @@ function App() {
                         call={call}
                         hideTicketsArray={hideTicketsArray}
                         setHideTicketsArray={setHideTicketsArray}
+                        clickedDeleteOrUndelete={clickedDeleteOrUndelete}
                     />
                 ))}
             </main>
