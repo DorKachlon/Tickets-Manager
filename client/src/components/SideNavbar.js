@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "@material-ui/core/styles";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -19,12 +19,20 @@ import useStyles from "../useStyles";
 export default function SideNavbar({
     handleDrawerClose,
     open,
-    valueOfNav,
-    setValueOfNav,
+    // valueOfNav,
+    // setValueOfNav,
+    loadTicketsArray,
 }) {
+    const [valueOfNav, setValueOfNav] = useState(1);
     console.log("render side");
     const classes = useStyles();
     const theme = useTheme();
+
+    useEffect(() => {
+        if ([1, 2, 3, 5].includes(valueOfNav)) loadTicketsArray(valueOfNav);
+        // if (valueOfNav === 4) ;
+    }, [valueOfNav,loadTicketsArray]);
+
     return (
         <>
             <Drawer

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,8 +14,6 @@ import DataTitle from "./DataTitle";
 import useStyles from "../useStyles";
 
 export default function HeaderBar({
-    setSelectValue,
-    selectValue,
     loadTicketsArrayForSearch,
     open,
     handleDrawerOpen,
@@ -24,6 +22,7 @@ export default function HeaderBar({
     hideTicketsCounter,
     restore,
 }) {
+    const [selectValue, setSelectValue] = useState("searchText");
     console.log("render header");
     const classes = useStyles();
     const handleChange = (event) => {
@@ -100,7 +99,7 @@ export default function HeaderBar({
                         id="searchInput"
                         label="Search"
                         onKeyUp={(e) => {
-                            loadTicketsArrayForSearch(e.target.value);
+                            loadTicketsArrayForSearch(e.target.value, selectValue);
                         }}
                     />
                     <FormControl
