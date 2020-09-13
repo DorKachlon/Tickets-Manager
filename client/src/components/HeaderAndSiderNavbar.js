@@ -5,7 +5,6 @@ import SideNavbar from "./SideNavbar";
 export default function HeaderAndSiderNavbar({
     loadTicketsArrayForSearch,
     ticketsArray,
-    hideTicketsCounter,
     restore,
     valueOfNav,
     setValueOfNav,
@@ -29,7 +28,6 @@ export default function HeaderAndSiderNavbar({
                 handleDrawerOpen={handleDrawerOpen}
                 valueOfNav={valueOfNav}
                 ticketsArray={ticketsArray}
-                hideTicketsCounter={hideTicketsCounter}
                 restore={restore}
             />
             <SideNavbar

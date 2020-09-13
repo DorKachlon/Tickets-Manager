@@ -37,8 +37,6 @@ function addZero(i) {
 
 export default function Ticket({
     ticket,
-    setHideTicketsCounter,
-    hideTicketsCounter,
     clickedDoneOrUndone,
     clickedDeleteOrUndelete,
     clickedHide,
@@ -63,7 +61,6 @@ export default function Ticket({
                             textTransform: "none",
                         }}
                         onClick={() => {
-                            setHideTicketsCounter(hideTicketsCounter + 1);
                             clickedHide(ticket.id);
                         }}
                         color="primary"

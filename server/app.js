@@ -57,6 +57,12 @@ app.get("/api/tickets/deleted", async (req, res) => {
     const filterArr = arr.filter((obj) => obj.delete);
     res.send(filterArr);
 });
+app.get("/api/tickets/hided", async (req, res) => {
+    const content = await fs.readFile(filePath);
+    const arr = JSON.parse(content);
+    const filterArr = arr.filter((obj) => obj.hide);
+    res.send(filterArr);
+});
 
 app.post("/api/tickets/:ticketId/done", async (req, res) => {
     const content = await fs.readFile(filePath);

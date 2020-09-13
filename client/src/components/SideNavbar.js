@@ -29,9 +29,9 @@ export default function SideNavbar({
     const theme = useTheme();
 
     useEffect(() => {
-        if ([1, 2, 3, 5].includes(valueOfNav)) loadTicketsArray(valueOfNav);
+        if ([1, 2, 3, 4, 5].includes(valueOfNav)) loadTicketsArray(valueOfNav);
         // if (valueOfNav === 4) ;
-    }, [valueOfNav,loadTicketsArray]);
+    }, [valueOfNav, loadTicketsArray]);
 
     return (
         <>

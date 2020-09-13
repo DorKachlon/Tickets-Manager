@@ -8,12 +8,9 @@ import useStyles from "../useStyles";
 
 function App() {
     const [ticketsArray, setTicketsArray] = useState([]);
-    const [hideTicketsCounter, setHideTicketsCounter] = useState(0);
     const classes = useStyles();
 
     console.log("render app");
-
-    const restore = useCallback(() => setHideTicketsCounter(0), []);
 
     const loadTicketsArrayForSearch = useCallback(
         async (inputValue, selectValue) => {
@@ -36,49 +33,54 @@ function App() {
         []
     );
 
-    const loadTicketsArray = useCallback(
-        async (valueOfNav) => {
-            try {
-                switch (valueOfNav) {
-                    case 1: {
-                        const { data } = await axios.get("/api/tickets");
-                        setTicketsArray(data.filter((obj) => !obj.delete));
-                        break;
-                    }
-                    case 2: {
-                        const { data } = await axios.get("/api/tickets/done");
-                        setTicketsArray(data.filter((obj) => !obj.delete));
-                        break;
-                    }
-                    case 3: {
-                        const { data } = await axios.get("/api/tickets/undone");
-                        setTicketsArray(data.filter((obj) => !obj.delete));
-                        break;
-                    }
-                    case 5: {
-                        const { data } = await axios.get(
-                            "/api/tickets/deleted"
-                        );
-                        setTicketsArray(data);
-                        break;
-                    }
-                    default: {
-                        const { data } = await axios.get("/api/tickets");
-                        setTicketsArray(data);
-                        break;
-                    }
+    const loadTicketsArray = useCallback(async (valueOfNav) => {
+        try {
+            switch (valueOfNav) {
+                case 1: {
+                    const { data } = await axios.get("/api/tickets");
+                    setTicketsArray(data.filter((obj) => !obj.delete));
+                    break;
                 }
-            } catch (e) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: `${e.message}`,
-                });
+                case 2: {
+                    const { data } = await axios.get("/api/tickets/done");
+                    setTicketsArray(data.filter((obj) => !obj.delete));
+                    break;
+                }
+                case 3: {
+                    const { data } = await axios.get("/api/tickets/undone");
+                    setTicketsArray(data.filter((obj) => !obj.delete));
+                    break;
+                }
+                case 4: {
+                    const { data } = await axios.get("/api/tickets/hided");
+                    setTicketsArray(data.filter((obj) => !obj.delete));
+                    break;
+                }
+                case 5: {
+                    const { data } = await axios.get("/api/tickets/deleted");
+                    setTicketsArray(data);
+                    break;
+                }
+                default: {
+                    const { data } = await axios.get("/api/tickets");
+                    setTicketsArray(data);
+                    break;
+                }
             }
-            restore();
-        },
-        [restore]
-    );
+        } catch (e) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `${e.message}`,
+            });
+        }
+        // restore();
+    }, []);
+
+    const restore = useCallback(async () => {
+        await axios.post(`/api/tickets/UnHideAll`);
+        loadTicketsArray();
+    }, [loadTicketsArray]);
 
     const clickedDoneOrUndone = useCallback(
         async (id, doneOrUndone) => {
@@ -133,7 +135,6 @@ function App() {
             <HeaderAndSiderNavbar
                 loadTicketsArrayForSearch={loadTicketsArrayForSearch}
                 ticketsArray={ticketsArray}
-                hideTicketsCounter={hideTicketsCounter}
                 restore={restore}
                 loadTicketsArray={loadTicketsArray}
             />
@@ -144,17 +145,20 @@ function App() {
             // })}
             >
                 <div className={classes.drawerHeader} />
-                {ticketsArray.map((ticket) => (
-                    <Ticket
-                        key={ticket.id}
-                        ticket={ticket}
-                        hideTicketsCounter={hideTicketsCounter}
-                        setHideTicketsCounter={setHideTicketsCounter}
-                        clickedDoneOrUndone={clickedDoneOrUndone}
-                        clickedDeleteOrUndelete={clickedDeleteOrUndelete}
-                        clickedHide={clickedHide}
-                    />
-                ))}
+                {ticketsArray.map(
+                    (ticket) =>
+                        !ticket.hide && (
+                            <Ticket
+                                key={ticket.id}
+                                ticket={ticket}
+                                clickedDoneOrUndone={clickedDoneOrUndone}
+                                clickedDeleteOrUndelete={
+                                    clickedDeleteOrUndelete
+                                }
+                                clickedHide={clickedHide}
+                            />
+                        )
+                )}
             </main>
         </div>
     );

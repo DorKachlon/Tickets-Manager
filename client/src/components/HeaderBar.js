@@ -19,7 +19,6 @@ export default function HeaderBar({
     handleDrawerOpen,
     valueOfNav,
     ticketsArray,
-    hideTicketsCounter,
     restore,
 }) {
     const [selectValue, setSelectValue] = useState("searchText");
@@ -85,11 +84,7 @@ export default function HeaderBar({
                         Tickets Manager -
                         <span id="titlePartOfNav"> {titlePartOfNav()}</span>
                     </Typography>
-                    <DataTitle
-                        ticketsArray={ticketsArray}
-                        hideTicketsCounter={hideTicketsCounter}
-                        restore={restore}
-                    />
+                    <DataTitle ticketsArray={ticketsArray} restore={restore} />
                     <TextField
                         style={{
                             marginLeft: "auto",
@@ -99,7 +94,10 @@ export default function HeaderBar({
                         id="searchInput"
                         label="Search"
                         onKeyUp={(e) => {
-                            loadTicketsArrayForSearch(e.target.value, selectValue);
+                            loadTicketsArrayForSearch(
+                                e.target.value,
+                                selectValue
+                            );
                         }}
                     />
                     <FormControl
