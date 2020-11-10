@@ -8,7 +8,6 @@ export default function HeaderAndSiderNavbar({
     restore,
     valueOfNav,
     setValueOfNav,
-    loadTicketsArray,
 }) {
     const [open, setOpen] = useState(false);
     console.log("render header side");
@@ -35,7 +34,6 @@ export default function HeaderAndSiderNavbar({
                 open={open}
                 valueOfNav={valueOfNav}
                 setValueOfNav={setValueOfNav}
-                loadTicketsArray={loadTicketsArray}
             />
         </>
     );

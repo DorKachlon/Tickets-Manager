@@ -14,7 +14,9 @@
         "clsx": "^1.1.1",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
+        "react-router-dom": "^5.2.0",
         "react-scripts": "3.4.1",
+        "react-virtualized": "^9.22.2",
         "read-more-react": "^1.0.10",
         "readmore-js": "^2.2.1",
         "sweetalert2": "^9.17.1"

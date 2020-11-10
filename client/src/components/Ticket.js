@@ -8,139 +8,145 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import "../style/ticket.css";
 import ReadMoreReact from "read-more-react";
 import AddToQueueIcon from "@material-ui/icons/AddToQueue";
-
+import axios from "axios";
+import Swal from "sweetalert2";
 function convertDate(creationTime) {
-    const d = new Date(creationTime);
-    const m = addZero(d.getMinutes());
-    let h = d.getHours();
-    let amPm = "PM";
-    if (h > 12) {
-        h -= 12;
-        amPm = "PM";
-    } else if (h < 12) {
-        amPm = "AM";
-    }
-    const s = addZero(d.getSeconds());
-    let today = d;
-    const dd = String(today.getDate()).padStart(2, "0");
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const yyyy = today.getFullYear();
-    today = `${dd}/${mm}/${yyyy}`;
-    return `${today}, ${h}:${m}:${s} ${amPm}`;
+  const d = new Date(creationTime);
+  const m = addZero(d.getMinutes());
+  let h = d.getHours();
+  let amPm = "PM";
+  if (h > 12) {
+    h -= 12;
+    amPm = "PM";
+  } else if (h < 12) {
+    amPm = "AM";
+  }
+  const s = addZero(d.getSeconds());
+  let today = d;
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+  today = `${dd}/${mm}/${yyyy}`;
+  return `${today}, ${h}:${m}:${s} ${amPm}`;
 }
 function addZero(i) {
-    if (i < 10) {
-        i = `0${i}`;
-    }
-    return i;
+  if (i < 10) {
+    i = `0${i}`;
+  }
+  return i;
 }
 
-export default function Ticket({
-    ticket,
-    clickedDoneOrUndone,
-    clickedDeleteOrUndelete,
-    clickedHide,
-}) {
-    console.log("render ticket");
+export default function Ticket({ ticket, loadTicketsArray }) {
+  console.log("render ticket");
+  const clickedDoneOrUndone = async (id, doneOrUndone) => {
+    try {
+      await axios.post(`/api/tickets/${id}/${doneOrUndone}`);
+      loadTicketsArray();
+    } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${e.message}`,
+      });
+    }
+  };
 
-    return (
-        <div className={"ticket"}>
-            <Paper
-                elevation={3}
-                style={
-                    ticket.done ? { backgroundColor: "rgb(144, 204, 117)" } : {}
-                }
-            >
-                <div className="headerTicket">
-                    <div className="title"> {ticket.title}</div>
-                    <Button
-                        className="hideTicketButton"
-                        style={{
-                            marginLeft: "auto",
-                            fontWeight: "bolder",
-                            textTransform: "none",
-                        }}
-                        onClick={() => {
-                            clickedHide(ticket.id);
-                        }}
-                        color="primary"
-                    >
-                        Hide
-                    </Button>
-                </div>
-                <div className="content">
-                    <ReadMoreReact
-                        style={{ color: "blue" }}
-                        text={ticket.content}
-                        min={500}
-                        ideal={500}
-                        max={10000}
-                        readMoreText="see more"
-                    />
-                </div>
-                {/* <div className="content">{ticket.content}</div> */}
-                <div className="footerTicket">
-                    <div className="email">
-                        <span style={{ marginRight: "0.5em" }}>by</span>
-                        {ticket.userEmail}
-                    </div>
-                    <div className="date">
-                        {convertDate(ticket.creationTime)}
-                    </div>
-                    {ticket.labels && (
-                        <div className="labels">
-                            {ticket.labels.map((label) => (
-                                <span disabled key={label} className="label">
-                                    {label}
-                                </span>
-                            ))}
-                        </div>
-                    )}
-                </div>
-                <div
-                    className="footerButton"
-                    style={
-                        ticket.delete
-                            ? { backgroundColor: "rgba(211, 109, 109, 0.84)" }
-                            : {}
-                    }
-                >
-                    {!ticket.done ? (
-                        <IconButton
-                            onClick={() =>
-                                clickedDoneOrUndone(ticket.id, "done")
-                            }
-                        >
-                            <CheckCircleIcon style={{ color: "green" }} />
-                        </IconButton>
-                    ) : (
-                        <IconButton
-                            onClick={() =>
-                                clickedDoneOrUndone(ticket.id, "undone")
-                            }
-                        >
-                            <CancelIcon style={{ color: "red" }} />
-                        </IconButton>
-                    )}
-                    {!ticket.delete ? (
-                        <IconButton
-                            onClick={() =>
-                                clickedDeleteOrUndelete(ticket.id, "delete")
-                            }
-                        >
-                            <DeleteIcon style={{ color: "red" }} />
-                        </IconButton>
-                    ) : (
-                        <IconButton
-                            onClick={() =>
-                                clickedDeleteOrUndelete(ticket.id, "undelete")
-                            }
-                        >
-                            <AddToQueueIcon style={{ color: "green" }} />
-                        </IconButton>
-                    )}
-                </div>
-            </Paper>
+  const clickedDeleteOrUndelete = async (id, deleteOrUndelete) => {
+    try {
+      await axios.post(`/api/tickets/${id}/${deleteOrUndelete}`);
+      loadTicketsArray();
+    } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${e.message}`,
+      });
+    }
+  };
+
+  const clickedHide = async (id) => {
+    try {
+      await axios.post(`/api/tickets/${id}/hide`);
+      loadTicketsArray();
+    } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${e.message}`,
+      });
+    }
+  };
+  return (
+    <div className={"ticket"}>
+      <Paper elevation={3} style={ticket.done ? { backgroundColor: "rgb(144, 204, 117)" } : {}}>
+        <div className="headerTicket">
+          <div className="title"> {ticket.title}</div>
+          <Button
+            className="hideTicketButton"
+            style={{
+              marginLeft: "auto",
+              fontWeight: "bolder",
+              textTransform: "none",
+            }}
+            onClick={() => {
+              clickedHide(ticket.id);
+            }}
+            color="primary"
+          >
+            Hide
+          </Button>
         </div>
-    );
+        <div className="content">
+          <ReadMoreReact
+            style={{ color: "blue" }}
+            text={ticket.content}
+            min={500}
+            ideal={500}
+            max={10000}
+            readMoreText="see more"
+          />
+        </div>
+        {/* <div className="content">{ticket.content}</div> */}
+        <div className="footerTicket">
+          <div className="email">
+            <span style={{ marginRight: "0.5em" }}>by</span>
+            {ticket.userEmail}
+          </div>
+          <div className="date">{convertDate(ticket.creationTime)}</div>
+          {ticket.labels && (
+            <div className="labels">
+              {ticket.labels.map((label) => (
+                <span disabled key={label} className="label">
+                  {label}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+        <div
+          className="footerButton"
+          style={ticket.delete ? { backgroundColor: "rgba(211, 109, 109, 0.84)" } : {}}
+        >
+          {!ticket.done ? (
+            <IconButton onClick={() => clickedDoneOrUndone(ticket.id, "done")}>
+              <CheckCircleIcon style={{ color: "green" }} />
+            </IconButton>
+          ) : (
+            <IconButton onClick={() => clickedDoneOrUndone(ticket.id, "undone")}>
+              <CancelIcon style={{ color: "red" }} />
+            </IconButton>
+          )}
+          {!ticket.delete ? (
+            <IconButton onClick={() => clickedDeleteOrUndelete(ticket.id, "delete")}>
+              <DeleteIcon style={{ color: "red" }} />
+            </IconButton>
+          ) : (
+            <IconButton onClick={() => clickedDeleteOrUndelete(ticket.id, "undelete")}>
+              <AddToQueueIcon style={{ color: "green" }} />
+            </IconButton>
+          )}
+        </div>
+      </Paper>
+    </div>
+  );
 }

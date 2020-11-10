@@ -1,167 +1,103 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import "../style/App.css";
 import axios from "axios";
 import Swal from "sweetalert2";
-import Ticket from "./Ticket";
 import HeaderAndSiderNavbar from "./HeaderAndSiderNavbar";
 import useStyles from "../useStyles";
+import TicketContainer from "./TicketContainer";
 
 function App() {
-    const [ticketsArray, setTicketsArray] = useState([]);
-    const classes = useStyles();
+  const [ticketsArray, setTicketsArray] = useState([]);
+  const [valueOfNav, setValueOfNav] = useState(1);
+  const classes = useStyles();
 
-    console.log("render app");
+  console.log("render app");
 
-    const loadTicketsArrayForSearch = useCallback(
-        async (inputValue, selectValue) => {
-            try {
-                const { data } = await axios.get(
-                    `/api/tickets?${selectValue}=${encodeURIComponent(
-                        inputValue
-                    )}`
-                );
-                setTicketsArray(data);
-            } catch (e) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: `${e.message}`,
-                });
-            }
-            // setValueOfNav(6);
-        },
-        []
-    );
+  const loadTicketsArrayForSearch = useCallback(async (inputValue, selectValue) => {
+    try {
+      const { data } = await axios.get(
+        `/api/tickets?${selectValue}=${encodeURIComponent(inputValue)}`
+      );
+      setTicketsArray(data);
+    } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${e.message}`,
+      });
+    }
+    // setValueOfNav(6);
+  }, []);
 
-    const loadTicketsArray = useCallback(async (valueOfNav) => {
-        try {
-            switch (valueOfNav) {
-                case 1: {
-                    const { data } = await axios.get("/api/tickets");
-                    setTicketsArray(data.filter((obj) => !obj.delete));
-                    break;
-                }
-                case 2: {
-                    const { data } = await axios.get("/api/tickets/done");
-                    setTicketsArray(data.filter((obj) => !obj.delete));
-                    break;
-                }
-                case 3: {
-                    const { data } = await axios.get("/api/tickets/undone");
-                    setTicketsArray(data.filter((obj) => !obj.delete));
-                    break;
-                }
-                case 4: {
-                    const { data } = await axios.get("/api/tickets/hided");
-                    setTicketsArray(data.filter((obj) => !obj.delete));
-                    break;
-                }
-                case 5: {
-                    const { data } = await axios.get("/api/tickets/deleted");
-                    setTicketsArray(data);
-                    break;
-                }
-                default: {
-                    const { data } = await axios.get("/api/tickets");
-                    setTicketsArray(data);
-                    break;
-                }
-            }
-        } catch (e) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: `${e.message}`,
-            });
+  const loadTicketsArray = useCallback(async () => {
+    try {
+      switch (valueOfNav) {
+        case 1: {
+          const { data } = await axios.get("/api/tickets");
+          setTicketsArray(data.filter((obj) => !obj.delete));
+          break;
         }
-        // restore();
-    }, []);
+        case 2: {
+          const { data } = await axios.get("/api/tickets/done");
+          setTicketsArray(data.filter((obj) => !obj.delete));
+          break;
+        }
+        case 3: {
+          const { data } = await axios.get("/api/tickets/undone");
+          setTicketsArray(data.filter((obj) => !obj.delete));
+          break;
+        }
+        case 4: {
+          const { data } = await axios.get("/api/tickets/hided");
+          setTicketsArray(data.filter((obj) => !obj.delete));
+          break;
+        }
+        case 5: {
+          const { data } = await axios.get("/api/tickets/deleted");
+          setTicketsArray(data);
+          break;
+        }
+        default: {
+          const { data } = await axios.get("/api/tickets");
+          setTicketsArray(data);
+          break;
+        }
+      }
+    } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${e.message}`,
+      });
+    }
+    // restore();
+  }, [valueOfNav]);
 
-    const restore = useCallback(async () => {
-        await axios.post(`/api/tickets/UnHideAll`);
-        loadTicketsArray();
-    }, [loadTicketsArray]);
+  useEffect(() => {
+    loadTicketsArray();
+  }, [loadTicketsArray]);
 
-    const clickedDoneOrUndone = useCallback(
-        async (id, doneOrUndone) => {
-            try {
-                await axios.post(`/api/tickets/${id}/${doneOrUndone}`);
-                loadTicketsArray();
-            } catch (e) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: `${e.message}`,
-                });
-            }
-        },
-        [loadTicketsArray]
-    );
+  const restore = useCallback(async () => {
+    await axios.post(`/api/tickets/UnHideAll`);
+    loadTicketsArray();
+  }, [loadTicketsArray]);
 
-    const clickedDeleteOrUndelete = useCallback(
-        async (id, deleteOrUndelete) => {
-            try {
-                await axios.post(`/api/tickets/${id}/${deleteOrUndelete}`);
-                loadTicketsArray();
-            } catch (e) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: `${e.message}`,
-                });
-            }
-        },
-        [loadTicketsArray]
-    );
-
-    const clickedHide = useCallback(
-        async (id) => {
-            try {
-                await axios.post(`/api/tickets/${id}/hide`);
-                loadTicketsArray();
-            } catch (e) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: `${e.message}`,
-                });
-            }
-        },
-        [loadTicketsArray]
-    );
-
-    return (
-        <div className={classes.root}>
-            <HeaderAndSiderNavbar
-                loadTicketsArrayForSearch={loadTicketsArrayForSearch}
-                ticketsArray={ticketsArray}
-                restore={restore}
-                loadTicketsArray={loadTicketsArray}
-            />
-            <main
-            // style={{ width: "90vw" }}
-            // className={clsx(classes.content, {
-            //     [classes.contentShift]: open,
-            // })}
-            >
-                <div className={classes.drawerHeader} />
-                {ticketsArray.map(
-                    (ticket) =>
-                        !ticket.hide && (
-                            <Ticket
-                                key={ticket.id}
-                                ticket={ticket}
-                                clickedDoneOrUndone={clickedDoneOrUndone}
-                                clickedDeleteOrUndelete={
-                                    clickedDeleteOrUndelete
-                                }
-                                clickedHide={clickedHide}
-                            />
-                        )
-                )}
-            </main>
-        </div>
-    );
+  return (
+    <div className={classes.root}>
+      <HeaderAndSiderNavbar
+        loadTicketsArrayForSearch={loadTicketsArrayForSearch}
+        ticketsArray={ticketsArray}
+        restore={restore}
+        valueOfNav={valueOfNav}
+        setValueOfNav={setValueOfNav}
+      />
+      <TicketContainer
+        ticketsArray={ticketsArray}
+        valueOfNav={valueOfNav}
+        loadTicketsArray={loadTicketsArray}
+      />
+    </div>
+  );
 }
 
 export default App;
