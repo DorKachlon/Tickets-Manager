@@ -12,6 +12,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import DataTitle from "./DataTitle";
 import useStyles from "../useStyles";
 import clsx from "clsx";
+import SearchIcon from "@material-ui/icons/Search";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 export default function HeaderBar({
   loadTicketsArrayForSearch,
@@ -84,11 +86,21 @@ export default function HeaderBar({
               color: "white",
               marginRight: "1.5em",
             }}
+            variant="outlined"
+            placeholder="Search…"
+            className={classes.textField}
+            color="black"
             id="searchInput"
-            label="Search"
             onKeyUp={(e) => {
               setValueOfNav(1);
               loadTicketsArrayForSearch(e.target.value, selectValue);
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
             }}
           />
           <FormControl variant="outlined" className={classes.formControl}>
