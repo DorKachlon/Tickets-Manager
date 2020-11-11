@@ -1,5 +1,4 @@
 .main {
-  /* width: 60vw; */
   min-width: 800px;
 }
 
@@ -9,4 +8,6 @@
   color: black;
   padding: 0 1em;
   margin-left: 0.5em;
+  width: 200px;
+  text-align: center;
 }

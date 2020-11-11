@@ -12,7 +12,7 @@
 }
 .title {
   font-weight: bold;
-  font-size: 1.5vw;
+  font-size: max(1.5vw, 22px);
   margin: 0.5vw 1vw;
 }
 .hideTicketButton {
@@ -20,16 +20,15 @@
 }
 
 .content {
-  font-size: 1vw;
+  font-size: max(1vw, 14px);
   margin: 1vw;
   word-break: break-word;
 }
 .email,
 .date {
   margin: 0 1vw;
-  /* font-family: 'Roboto', sans-serif; */
   font-family: "Nunito", sans-serif;
-  font-size: 1vw;
+  font-size: max(1vw, 12px);
 }
 .email {
   margin-right: 1em;
@@ -49,14 +48,12 @@
 .footerButton {
   margin-top: 1em;
   background-color: rgba(211, 211, 211, 0.5);
-  border-radius: 1em 1em 0 0;
-  /* display: none; */
+
   display: flex;
   justify-content: center;
   visibility: hidden;
 }
 .MuiPaper-root:hover > .footerButton {
-  /* display: flex; */
   visibility: visible;
 }
 .MuiPaper-root {

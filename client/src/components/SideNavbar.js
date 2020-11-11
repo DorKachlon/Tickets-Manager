@@ -1,19 +1,22 @@
 import React from "react";
 import { useTheme } from "@material-ui/core/styles";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import IconButton from "@material-ui/core/IconButton";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import {
+  IconButton,
+  ListItemText,
+  ListItemIcon,
+  ListItem,
+  Drawer,
+  List,
+  Divider,
+} from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import SmsFailedIcon from "@material-ui/icons/SmsFailed";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+
 import useStyles from "../useStyles";
 
 export default function SideNavbar({ handleDrawerClose, open, valueOfNav, setValueOfNav }) {
@@ -89,7 +92,7 @@ export default function SideNavbar({ handleDrawerClose, open, valueOfNav, setVal
             <ListItemIcon>
               <VisibilityOffIcon style={valueOfNav === 4 ? { color: "white" } : {}} />
             </ListItemIcon>
-            <ListItemText primary="Hide Tickets  NOTWORK" />
+            <ListItemText primary="Hide Tickets" />
           </ListItem>
           <Divider />
           <ListItem

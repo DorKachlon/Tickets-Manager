@@ -26,7 +26,6 @@ function App() {
         text: `${e.message}`,
       });
     }
-    // setValueOfNav(6);
   }, []);
 
   const loadTicketsArray = useCallback(async () => {
@@ -70,7 +69,6 @@ function App() {
         text: `${e.message}`,
       });
     }
-    // restore();
   }, [valueOfNav]);
 
   useEffect(() => {
@@ -83,20 +81,23 @@ function App() {
   }, [loadTicketsArray]);
 
   return (
-    <div className={classes.root}>
-      <HeaderAndSiderNavbar
-        loadTicketsArrayForSearch={loadTicketsArrayForSearch}
-        ticketsArray={ticketsArray}
-        restore={restore}
-        valueOfNav={valueOfNav}
-        setValueOfNav={setValueOfNav}
-      />
+    <>
+      <div className={classes.root}>
+        <HeaderAndSiderNavbar
+          loadTicketsArrayForSearch={loadTicketsArrayForSearch}
+          ticketsArray={ticketsArray}
+          restore={restore}
+          valueOfNav={valueOfNav}
+          setValueOfNav={setValueOfNav}
+        />
+      </div>
+      <div style={{ height: "60px" }}></div>
       <TicketContainer
         ticketsArray={ticketsArray}
-        valueOfNav={valueOfNav}
         loadTicketsArray={loadTicketsArray}
+        valueOfNav={valueOfNav}
       />
-    </div>
+    </>
   );
 }
 
