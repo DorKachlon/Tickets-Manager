@@ -60,6 +60,7 @@ export default function Ticket({ ticket, loadTicketsArray }) {
         <div className="headerTicket">
           <div className="title"> {ticket.title}</div>
           <Chip
+            className="hideTicketButton"
             style={{
               margin: "5px 5px 0px auto",
               fontWeight: "bolder",
@@ -93,7 +94,7 @@ export default function Ticket({ ticket, loadTicketsArray }) {
           {ticket.labels && (
             <div className="labels">
               {ticket.labels.map((label) => (
-                <Chip label={label} style={{ margin: "5px" }} />
+                <Chip className="label" label={label} style={{ margin: "5px" }} />
               ))}
             </div>
           )}
