@@ -137,6 +137,6 @@ describe(projectName, () => {
       await page.click("#restoreHideTickets");
       const elements = await page.$$(".ticket");
       expect(elements.length).toBe(mockData.length);
-    }, 5000);
+    }, 10000);
   });
 });
