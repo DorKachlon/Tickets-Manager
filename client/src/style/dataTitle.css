@@ -1,0 +1,12 @@
+#restoreHideTickets {
+    border: transparent;
+    border-radius: 1em;
+    cursor: pointer;
+}
+#restoreHideTickets:hover {
+    cursor: pointer;
+    background-color: #90cc75;
+}
+#restoreHideTickets:focus {
+    outline: none;
+}

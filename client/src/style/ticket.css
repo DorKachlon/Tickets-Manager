@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap");
+* {
+  font-family: "Raleway", sans-serif;
+}
+.ticket {
+  margin: 2vw;
+}
+.headerTicket {
+  display: flex;
+}
+.title {
+  font-weight: bold;
+  font-size: max(1.5vw, 22px);
+  margin: 0.5vw 1vw;
+}
+.hideTicketButton {
+  margin-left: auto;
+}
+
+.content {
+  font-size: max(1vw, 14px);
+  margin: 1vw;
+  word-break: break-word;
+}
+.email,
+.date {
+  margin: 0 1vw;
+  font-family: "Nunito", sans-serif;
+  font-size: max(1vw, 12px);
+}
+.email {
+  margin-right: 1em;
+}
+.footerTicket {
+  display: flex;
+}
+.labels {
+  margin-left: auto;
+}
+.label {
+  background-color: rgb(211, 211, 211);
+  padding: 0 1em;
+  border-radius: 1em;
+  margin: 0 0.5em;
+}
+.footerButton {
+  margin-top: 1em;
+  background-color: rgba(211, 211, 211, 0.5);
+
+  display: flex;
+  justify-content: center;
+  visibility: hidden;
+}
+.MuiPaper-root:hover > .footerButton {
+  visibility: visible;
+}
+.MuiPaper-root {
+  transition: ease-in-out;
+  transition: visability 1s;
+}
+.hiddenTicket {
+  display: none;
+}
+
+.read-more-button {
+  color: blue;
+  cursor: pointer;
+  margin-top: 0.5em;
+}
