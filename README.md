@@ -32,7 +32,7 @@ Each card has a number of actions that can be taken:
 ### Search
 
 I separated the search into 3 options, you can search by title, content or email. All this to give comfortable user experiences that he can quickly find the right result for him.
-![gif from shareX](SEARCH_GIF.gif)
+![gif from shareX](./readme-files/SEARCH_GIF.gif)
 
 ### Side menu & top menu:
 
@@ -44,7 +44,7 @@ You can note that if possible hide a ticket will be displayed in the top menu th
 
 If a card is deleted and hidden it will not appear in the deleted list because it is hidden.
 
-![gif shareX](GIF.gif)
+![gif shareX](./readme-files/GIF.gif)
 
 ### Soft delete:
 
