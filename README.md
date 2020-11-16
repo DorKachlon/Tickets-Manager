@@ -2,7 +2,7 @@
 
 ## link to Demo application
 
-[My glitch project](https://tickets-manager-dk.glitch.me)
+[My Heroku project](https://ticket-manager-dk.herokuapp.com/)
 
 ## Info
 
